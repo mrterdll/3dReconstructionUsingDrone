@@ -1,0 +1,9 @@
+testground/bitirme/
+testground/__pycache__/
+open3d/open3d-venv/
+gorsellestirme/gorsellestirme-venv/
+orbit.zip
+*.pyc
+*.asc
+*.pyc
+*.PNG
