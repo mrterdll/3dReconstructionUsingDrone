@@ -14,7 +14,7 @@ def printUsage():
    print("Usage: python camera.py [depth|segmentation|scene]")
 
 #cameraType = "depth"
-cameraType = "scene" 
+cameraType = "normals" 
 for arg in sys.argv[1:]:
   cameraType = arg.lower()
 
@@ -53,7 +53,7 @@ fps = 0
 
 while True:
     # because this method returns std::vector<uint8>, msgpack decides to encode it as a string unfortunately.
-    rawImage = client.simGetImage("high_res_bottom", cameraTypeMap[cameraType])
+    rawImage = client.simGetImage("0", cameraTypeMap[cameraType])
     if (rawImage == None):
         print("Camera is not returning image, please check airsim for error messages")
         sys.exit(0)
