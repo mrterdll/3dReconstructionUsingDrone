@@ -32,7 +32,7 @@ def camera_execute():
         filename = "tepe_photo_"
         count = 0
         while record_data:
-            
+
             # because this method returns std::vector<uint8>, msgpack decides to encode it as a string unfortunately.
             rawImage = camera_client.simGetImage("high_res_bottom", airsim.ImageType.Scene)
             if (rawImage == None):
@@ -57,6 +57,8 @@ def camera_execute():
             key = cv2.waitKey(1) & 0xFF
             if (key == 27 or key == ord('q') or key == ord('x')):
                 break
+            #sleep for 2 seconds
+            time.sleep(0.5)
     except KeyboardInterrupt:
         airsim.wait_key('Press any key to stop running this script')
         print("Done!\n")
@@ -80,14 +82,14 @@ if __name__ == "__main__":
     client.takeoffAsync().join()
 
     airsim.wait_key('Veri toplama ve ilerleme icin bir tusa basiniz')
-    client.moveToZAsync(-15, 5).join()
+    client.moveToZAsync(client.getMultirotorState().kinematics_estimated.position.z_val + (-15), 5).join()
     record_data = True
     lidarThread.start()
     x_pos =  client.getMultirotorState().kinematics_estimated.position.x_val
     y_pos =  client.getMultirotorState().kinematics_estimated.position.y_val
     z_pos = client.getMultirotorState().kinematics_estimated.position.z_val
 
-    client.moveToPositionAsync( x_pos+ 20, y_pos+20, z_pos, 2).join()
+    client.moveToPositionAsync( x_pos- 20, y_pos-20, z_pos, 2).join()
     client.moveToPositionAsync( x_pos, y_pos, z_pos, 2).join()
     record_data = False
     client.hoverAsync().join()

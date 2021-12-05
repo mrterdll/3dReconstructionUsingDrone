@@ -1,5 +1,6 @@
 testground/bitirme/
 testground/__pycache__/
+testground/ReleaseV1.6.Halibut.WindowsBinaries_VS2017
 open3d/open3d-venv/
 gorsellestirme/gorsellestirme-venv/
 orbit.zip
@@ -7,3 +8,5 @@ orbit.zip
 *.asc
 *.pyc
 *.PNG
+*.zip
+testground/foto/sfm.sfm
