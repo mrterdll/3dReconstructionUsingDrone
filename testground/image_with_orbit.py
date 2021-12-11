@@ -33,12 +33,12 @@ def camera_execute():
         frameCount = 0
         startTime = time.time()
         fps = 0
-        filename = "photo_"
+        filename = "orbit_"
         count = 0
         while record_data:
             
             # because this method returns std::vector<uint8>, msgpack decides to encode it as a string unfortunately.
-            rawImage = camera_client.simGetImage("front_center", airsim.ImageType.Scene)
+            rawImage = camera_client.simGetImage("high_res_bottom", airsim.ImageType.Scene)
             if (rawImage == None):
                 print("Camera is not returning image, please check airsim for error messages")
                 sys.exit(0)
@@ -89,7 +89,7 @@ if __name__ == "__main__":
 
     airsim.wait_key('Yukselis icin bir tusa basiniz')
     
-    client.moveToZAsync(-2, 1).join()
+    client.moveToZAsync(-5, 1).join()
     client.hoverAsync().join()
 
     airsim.wait_key('Veri toplama ve yorunge icin bir tusa basiniz')
@@ -104,15 +104,17 @@ if __name__ == "__main__":
     print(current_altitude)
     print(center_vector_w)
     #print(center_vector_y)
-    nav = orbit.OrbitNavigator(client =client,radius=25,altitude=current_altitude, speed=3, iterations=1, center=[center_vector_w,0], snapshots=0)
+    nav = orbit.OrbitNavigator(client =client,radius=15,altitude=current_altitude, speed=2, iterations=1, center=[center_vector_w,0], snapshots=0)
     lidarThread.start()
     nav.start_orbit()
 
     airsim.wait_key("inis yapmak icin bir tusa basiniz")
-    client.moveToZAsync(-1, 1).join()
+    record_data = False
+    client.moveToZAsync(-1, 5).join()
+    
     client.landAsync().join()
     #client.armDisarm(False)
-    record_data = False
+    
     client.enableApiControl(False)
 
     pass

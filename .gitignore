@@ -10,3 +10,7 @@ orbit.zip
 *.PNG
 *.zip
 testground/foto/sfm.sfm
+*.sfm
+*.abc
+*.abc
+testground/foto/pointCloud.abc
