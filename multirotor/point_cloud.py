@@ -44,7 +44,7 @@ for arg in sys.argv[1:]:
 client = airsim.MultirotorClient()
 
 while True:
-    rawImage = client.simGetImage("0", airsim.ImageType.DepthPerspective)
+    rawImage = client.simGetImage("high_res_bottom", airsim.ImageType.DepthPerspective)
     if (rawImage is None):
         print("Camera is not returning image, please check airsim for error messages")
         airsim.wait_key("Press any key to exit")

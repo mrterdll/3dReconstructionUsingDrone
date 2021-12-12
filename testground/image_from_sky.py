@@ -29,7 +29,7 @@ def camera_execute():
         frameCount = 0
         startTime = time.time()
         fps = 0
-        filename = "tepe_photo_"
+        filename = "manuel_ucus_1_"
         count = 0
         while record_data:
 
@@ -42,7 +42,7 @@ def camera_execute():
                 png = cv2.imdecode(airsim.string_to_uint8_array(rawImage), cv2.IMREAD_UNCHANGED)
                 cv2.putText(png,'FPS ' + str(fps),textOrg, fontFace, fontScale,(255,0,255),thickness)
                 #cv2.imshow("Depth", png)
-                cv2.imshow("scene", png)
+                #cv2.imshow("scene", png)
                 
                 airsim.write_file(os.path.normpath("./foto/"+filename+str(count)+ '.png'), airsim.string_to_uint8_array(rawImage))
                 count+=1
@@ -52,13 +52,13 @@ def camera_execute():
             if (diff > 1):
                 fps = frameCount
                 frameCount = 0
-                startTime = endTime
+                stardtTime = endTime
 
             key = cv2.waitKey(1) & 0xFF
             if (key == 27 or key == ord('q') or key == ord('x')):
                 break
-            #sleep for 2 seconds
-            time.sleep(0.5)
+            #sleep for .05 seconds
+            #time.sleep(2)
     except KeyboardInterrupt:
         airsim.wait_key('Press any key to stop running this script')
         print("Done!\n")
@@ -67,37 +67,40 @@ def camera_execute():
         return
 
 if __name__ == "__main__":
-    filename = "tepe_foto"
+    filename = "manuel_ucus_1_"
 
     lidarThread = Thread(target=camera_execute,daemon=True)
     
-    client.confirmConnection()
+#    client.confirmConnection()
     camera_client.confirmConnection()
-    client.enableApiControl(False)
-    client.enableApiControl(True)
-    client.armDisarm(False)
+#        client.enableApiControl(False)
+ #       client.enableApiControl(True)
+  #      client.armDisarm(False)
 
     airsim.wait_key('Kalkis icin bir tusa basiniz')
-    client.armDisarm(True)
-    client.takeoffAsync().join()
+#    client.armDisarm(True)
+#   client.takeoffAsync().join()
 
     airsim.wait_key('Veri toplama ve ilerleme icin bir tusa basiniz')
-    client.moveToZAsync(client.getMultirotorState().kinematics_estimated.position.z_val + (-15), 5).join()
+    time.sleep(3)
+#   client.moveToZAsync(client.getMultirotorState().kinematics_estimated.position.z_val + (-15), 5).join()
     record_data = True
     lidarThread.start()
-    x_pos =  client.getMultirotorState().kinematics_estimated.position.x_val
-    y_pos =  client.getMultirotorState().kinematics_estimated.position.y_val
-    z_pos = client.getMultirotorState().kinematics_estimated.position.z_val
 
-    client.moveToPositionAsync( x_pos- 20, y_pos-20, z_pos, 2).join()
-    client.moveToPositionAsync( x_pos, y_pos, z_pos, 2).join()
+    time.sleep(60)
+#    x_pos =  client.getMultirotorState().kinematics_estimated.position.x_val
+#    y_pos =  client.getMultirotorState().kinematics_estimated.position.y_val
+#    z_pos = client.getMultirotorState().kinematics_estimated.position.z_val
+
+#   client.moveToPositionAsync( x_pos , y_pos + 20, z_pos, 2).join()
     record_data = False
-    client.hoverAsync().join()
+#   client.moveToPositionAsync( x_pos, y_pos, z_pos, 2).join()
+#   client.hoverAsync().join()
 
     #airsim.wait_key("inis yapmak icin bir tusa basiniz")
-    client.moveToZAsync(-1, 5).join()
-    client.landAsync().join()
-  #  client.armDisarm(False)
+#   client.moveToZAsync(-1, 5).join()
+#   client.landAsync().join()
+    #client.armDisarm(False)
     
     client.enableApiControl(False)
 

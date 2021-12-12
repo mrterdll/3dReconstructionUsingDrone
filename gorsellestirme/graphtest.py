@@ -6,8 +6,8 @@
 
 # %%
 import pandas
-column_names = ["x","y","z"]
-points = pandas.read_csv("depth-cloud.asc",delimiter = " ",names=column_names)
+column_names = ["x","y","z","r","g","b"]
+points = pandas.read_csv("sfm.ply",delimiter = " ",names=column_names)
 
 #points.drop(points[points.z > 0.8].index, inplace=True)
 
@@ -50,7 +50,7 @@ import plotly.graph_objects as go
 # x_list = x_list[100000:500000]
 # y_list = y_list[100000:500000]
 # z_list = z_list[100000:500000]
-z_list = [elem * -1 for elem in z_list]
+#z_list = [elem * -1 for elem in z_list]
 
 # %%
 

@@ -2,13 +2,13 @@ import pandas
 import numpy as np
 import pyvista as pv
 
-column_names = ["x","y","z"]
-points = pandas.read_csv("depth-cloud-kure.asc",delimiter = " ",names=column_names)
+column_names = ["x","y","z","r","g","b"]
+points = pandas.read_csv("sfm.ply",delimiter = " ",names=column_names)
 #points.drop(points[points.z > 0.8].index, inplace=True)
 #convert pandas dataframe to numpy array
-numpy_arr = points.to_numpy()
+numpy_arr = points[["x","y","z"]].to_numpy()
 
-sample  = 10
+#sample  = 10
 #numpy_arr = numpy_arr[::sample]
 #clouds = pv.UnstructuredGrid(numpy_arr)
 
