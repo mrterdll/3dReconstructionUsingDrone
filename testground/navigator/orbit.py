@@ -179,7 +179,7 @@ class OrbitNavigator:
         
         # AirSim uses NED coordinates so negative axis is up.
         start = self.client.getMultirotorState().kinematics_estimated.position
-        landed = self.client.getMultirotorState().landed_state
+        #landed = self.client.getMultirotorState().landed_state
         
 
         z = start.z_val # use current altitude

@@ -29,7 +29,7 @@ def camera_execute():
         frameCount = 0
         startTime = time.time()
         fps = 0
-        filename = "manuel_ucus_1_"
+        filename = "ucus_1_"
         count = 0
         while record_data:
 
@@ -67,40 +67,41 @@ def camera_execute():
         return
 
 if __name__ == "__main__":
-    filename = "manuel_ucus_1_"
+    filename = "ucus_1_"
 
     lidarThread = Thread(target=camera_execute,daemon=True)
-    
-#    client.confirmConnection()
+    client.confirmConnection()
     camera_client.confirmConnection()
-#        client.enableApiControl(False)
- #       client.enableApiControl(True)
-  #      client.armDisarm(False)
+    client.enableApiControl(False)
+    client.enableApiControl(True)
+    client.armDisarm(False)
 
-    airsim.wait_key('Kalkis icin bir tusa basiniz')
-#    client.armDisarm(True)
-#   client.takeoffAsync().join()
+    #airsim.wait_key('Kalkis icin bir tusa basiniz')
+    client.armDisarm(True)
+    client.takeoffAsync().join()
 
-    airsim.wait_key('Veri toplama ve ilerleme icin bir tusa basiniz')
+    #airsim.wait_key('Veri toplama ve ilerleme icin bir tusa basiniz')
     time.sleep(3)
-#   client.moveToZAsync(client.getMultirotorState().kinematics_estimated.position.z_val + (-15), 5).join()
+    client.moveToZAsync(client.getMultirotorState().kinematics_estimated.position.z_val + (-15), 5).join()
     record_data = True
     lidarThread.start()
 
-    time.sleep(60)
-#    x_pos =  client.getMultirotorState().kinematics_estimated.position.x_val
-#    y_pos =  client.getMultirotorState().kinematics_estimated.position.y_val
-#    z_pos = client.getMultirotorState().kinematics_estimated.position.z_val
+    x_pos =  client.getMultirotorState().kinematics_estimated.position.x_val
+    y_pos =  client.getMultirotorState().kinematics_estimated.position.y_val
+    z_pos = client.getMultirotorState().kinematics_estimated.position.z_val
 
-#   client.moveToPositionAsync( x_pos , y_pos + 20, z_pos, 2).join()
+    client.moveToPositionAsync( x_pos , y_pos + 80, z_pos, 2).join()
+    
+    client.moveByVelocityZAsync(0,0, z_pos ,3, airsim.DrivetrainType.MaxDegreeOfFreedom, airsim.YawMode(False, 270)).join()
+    client.moveToPositionAsync( x_pos, y_pos, z_pos, 2).join()
     record_data = False
-#   client.moveToPositionAsync( x_pos, y_pos, z_pos, 2).join()
-#   client.hoverAsync().join()
-
+    client.hoverAsync().join()
+    
     #airsim.wait_key("inis yapmak icin bir tusa basiniz")
-#   client.moveToZAsync(-1, 5).join()
-#   client.landAsync().join()
-    #client.armDisarm(False)
+    client.moveByVelocityZAsync(0,0, z_pos ,3, airsim.DrivetrainType.MaxDegreeOfFreedom, airsim.YawMode(False, 90)).join()
+    client.moveToZAsync(-1, 5).join()
+    client.landAsync().join()
+    client.armDisarm(False)
     
     client.enableApiControl(False)
 

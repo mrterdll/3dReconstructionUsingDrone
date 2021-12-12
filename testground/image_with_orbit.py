@@ -1,3 +1,4 @@
+from airsim.types import YawMode
 import setup_path
 import airsim
 import numpy as np
@@ -8,6 +9,7 @@ import cv2
 import os
 import tempfile
 import sys
+import math
 
 # ip = "192.168.0.11"
 # client = airsim.MultirotorClient(ip=ip)
@@ -74,7 +76,7 @@ if __name__ == "__main__":
     #TODO: dron donerken veri toplanip gorsellestirilecek
     #TODO: lidar veri miktari azaltilacak ve deneme yapilacak
 
-    lidarThread = Thread(target=camera_execute,daemon=True)
+    cameraThread = Thread(target=camera_execute,daemon=True)
     
     client.confirmConnection()
     camera_client.confirmConnection()
@@ -94,18 +96,35 @@ if __name__ == "__main__":
 
     airsim.wait_key('Veri toplama ve yorunge icin bir tusa basiniz')
     record_data = True
-    current_altitude = client.getMultirotorState().kinematics_estimated.position.z_val
 
+    
+    drone_posistion = client.getMultirotorState().kinematics_estimated.position
+    current_altitude = drone_posistion.z_val
+    
 
-    center_vector_w = client.getMultirotorState('Drone1').kinematics_estimated.orientation.w_val
+    w_val = client.getMultirotorState('Drone1').kinematics_estimated.orientation.w_val
+    heading_degree = np.arccos(w_val) * 180 / 3.14159265359
+    print(heading_degree)
+        
+    orbit_radius = 15
+    center_point_x =  (np.cos(heading_degree) * orbit_radius) 
+    center_point_y =  (np.sin(heading_degree) * orbit_radius)
+
+    print(center_point_x )
+    print(center_point_y )
+
+    center_vector = [center_point_x,center_point_y]    
+    
     #center_vector_y = client.getMultirotorState('Drone1').kinematics_estimated.orientation
 
     #nav = orbit.OrbitNavigator(client =client,radius=15,altitude=current_altitude, speed=3, iterations=1, center=[0,-1], snapshots=0)
-    print(current_altitude)
-    print(center_vector_w)
+    #print(current_altitude)
+
     #print(center_vector_y)
-    nav = orbit.OrbitNavigator(client =client,radius=15,altitude=current_altitude, speed=2, iterations=1, center=[center_vector_w,0], snapshots=0)
-    lidarThread.start()
+    
+
+    nav = orbit.OrbitNavigator(client =client,radius=orbit_radius,altitude=current_altitude, speed=2, iterations=1, center = center_vector, snapshots=0)
+    #Thread.start()
     nav.start_orbit()
 
     airsim.wait_key("inis yapmak icin bir tusa basiniz")
