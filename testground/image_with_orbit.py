@@ -70,6 +70,34 @@ def camera_execute():
     finally:
         return
 
+def euler_from_quaternion(x, y, z, w):
+        """
+        Convert a quaternion into euler angles (roll, pitch, yaw)
+        roll is rotation around x in radians (counterclockwise)
+        pitch is rotation around y in radians (counterclockwise)
+        yaw is rotation around z in radians (counterclockwise)
+        """
+        t0 = +2.0 * (w * x + y * z)
+        t1 = +1.0 - 2.0 * (x * x + y * y)
+        roll_x = math.atan2(t0, t1)
+     
+        t2 = +2.0 * (w * y - z * x)
+        t2 = +1.0 if t2 > +1.0 else t2
+        t2 = -1.0 if t2 < -1.0 else t2
+        pitch_y = math.asin(t2)
+     
+        t3 = +2.0 * (w * z + x * y)
+        t4 = +1.0 - 2.0 * (y * y + z * z)
+        yaw_z = math.atan2(t3, t4)
+     
+        return roll_x, pitch_y, yaw_z # in radians
+
+
+#convert yaw to degrees
+def yaw_to_degrees(yaw):
+    return math.degrees(yaw)
+
+
 if __name__ == "__main__":
     filename = "orbit_test_1"
     #TODO: dronu yukseltecek kod yazilacak
@@ -91,7 +119,10 @@ if __name__ == "__main__":
 
     airsim.wait_key('Yukselis icin bir tusa basiniz')
     
-    client.moveToZAsync(-5, 1).join()
+    client.moveToZAsync(-5, 5).join()
+    #client.moveByVelocityZAsync(0,0, -5 ,0.20, airsim.DrivetrainType.MaxDegreeOfFreedom, airsim.YawMode(False, 53)).join()
+    #Gamepadim yanimda olmadigindan elimle yon vermek icin yazdim usttekini xdd
+    
     client.hoverAsync().join()
 
     airsim.wait_key('Veri toplama ve yorunge icin bir tusa basiniz')
@@ -101,27 +132,31 @@ if __name__ == "__main__":
     drone_posistion = client.getMultirotorState().kinematics_estimated.position
     current_altitude = drone_posistion.z_val
     
-
-    w_val = client.getMultirotorState('Drone1').kinematics_estimated.orientation.w_val
-    heading_degree = np.arccos(w_val) * 180 / 3.14159265359
-    print(heading_degree)
-        
-    orbit_radius = 15
-    center_point_x =  (np.cos(heading_degree) * orbit_radius) 
-    center_point_y =  (np.sin(heading_degree) * orbit_radius)
-
-    print(center_point_x )
-    print(center_point_y )
-
-    center_vector = [center_point_x,center_point_y]    
+    orientation = client.getMultirotorState().kinematics_estimated.orientation
     
-    #center_vector_y = client.getMultirotorState('Drone1').kinematics_estimated.orientation
-
-    #nav = orbit.OrbitNavigator(client =client,radius=15,altitude=current_altitude, speed=3, iterations=1, center=[0,-1], snapshots=0)
-    #print(current_altitude)
-
-    #print(center_vector_y)
     
+    
+    
+    #ACI HESAPLARI BASLANGIC :
+    #convert quaternion to euler
+    roll_x, pitch_y, yaw_z = euler_from_quaternion(orientation.x_val, orientation.y_val, orientation.z_val, orientation.w_val)
+    
+    yaw_z = yaw_to_degrees(yaw_z)
+    print(roll_x, pitch_y, yaw_z)
+
+    point_a = orientation.x_val + 10*math.cos(yaw_z*math.pi/180)
+    point_b = orientation.y_val + 10*math.sin(yaw_z*math.pi/180)
+
+    print(point_a, point_b)
+
+    center_vector = [point_a-orientation.x_val,point_b-orientation.y_val]
+    print(center_vector)
+
+    #ACI HESAPLARI BITIS
+    w_val = orientation.w_val
+    
+    orbit_radius = 10
+
 
     nav = orbit.OrbitNavigator(client =client,radius=orbit_radius,altitude=current_altitude, speed=2, iterations=1, center = center_vector, snapshots=0)
     #Thread.start()
