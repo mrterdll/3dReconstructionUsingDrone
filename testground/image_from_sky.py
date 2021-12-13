@@ -30,7 +30,7 @@ def camera_execute():
         startTime = time.time()
         fps = 0
         filename = "ucus_1_"
-        count = 1000
+        count = 0
         while record_data:
 
             # because this method returns std::vector<uint8>, msgpack decides to encode it as a string unfortunately.
@@ -58,7 +58,7 @@ def camera_execute():
             if (key == 27 or key == ord('q') or key == ord('x')):
                 break
             #sleep for .05 seconds
-            time.sleep(0.05)
+            #time.sleep(2)
     except KeyboardInterrupt:
         airsim.wait_key('Press any key to stop running this script')
         print("Done!\n")
@@ -82,7 +82,7 @@ if __name__ == "__main__":
 
     #airsim.wait_key('Veri toplama ve ilerleme icin bir tusa basiniz')
     time.sleep(3)
-    client.moveToZAsync(client.getMultirotorState().kinematics_estimated.position.z_val + (-19), 5).join()
+    client.moveToZAsync(client.getMultirotorState().kinematics_estimated.position.z_val + (-15), 5).join()
     record_data = True
     lidarThread.start()
 
