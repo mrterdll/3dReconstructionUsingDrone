@@ -60,18 +60,18 @@ if __name__ == "__main__":
     client.enableApiControl(True)
     client.armDisarm(False)
     
-    airsim.wait_key('Kalkis icin bir tusa basiniz')
+    #airsim.wait_key('Kalkis icin bir tusa basiniz')
     client.armDisarm(True)
     client.takeoffAsync().join()
-    airsim.wait_key('Veri toplama ve ilerleme icin bir tusa basiniz')
-    client.moveToZAsync(-35, 5).join()
+    #airsim.wait_key('Veri toplama ve ilerleme icin bir tusa basiniz')
+    client.moveToZAsync(-10, 5).join()
     record_data = True
     lidarThread.start()
     x_pos =  client.getMultirotorState().kinematics_estimated.position.x_val
     y_pos =  client.getMultirotorState().kinematics_estimated.position.y_val
     z_pos = client.getMultirotorState().kinematics_estimated.position.z_val
 
-    client.moveToPositionAsync( x_pos+ 30, y_pos+30, z_pos, 2).join()
+    client.moveToPositionAsync( x_pos+ 20, y_pos+20, z_pos, 2).join()
     client.moveToPositionAsync( x_pos, y_pos, z_pos, 2).join()
     client.hoverAsync().join()
 

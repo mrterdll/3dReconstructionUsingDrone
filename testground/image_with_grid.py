@@ -30,7 +30,7 @@ def camera_execute():
         frameCount = 0
         startTime = time.time()
         fps = 0
-        filename = "grid_1_"
+        filename = "grid_2_"
         count = 1000
         while record_data:
 
@@ -44,9 +44,7 @@ def camera_execute():
                 cv2.putText(png,'FPS ' + str(fps),textOrg, fontFace, fontScale,(255,0,255),thickness)
                 #cv2.imshow("Depth", png)
                 #cv2.imshow("scene", png)
-                #get current directory
-                #cwd = os.getcwd()
-                #print(cwd)
+                
                 with open (os.path.join("./testground/foto/",filename+str(count)+'.png'), "wb") as f:
                     f.write(bytes(airsim.string_to_uint8_array(rawImage)))
                 
@@ -63,8 +61,8 @@ def camera_execute():
             key = cv2.waitKey(1) & 0xFF
             if (key == 27 or key == ord('q') or key == ord('x')):
                 break
-            #sleep for .05 seconds
-            #time.sleep(2)
+            #sleep for 8 seconds
+            time.sleep(8)
     except KeyboardInterrupt:
         airsim.wait_key('Press any key to stop running this script')
         print("Done!\n")
@@ -79,7 +77,7 @@ def position():
     return x_val, y_val, z_val 
 
 if __name__ == "__main__":
-    filename = "grid_1_"
+    filename = "grid_2_"
 
     cameraThread = Thread(target=camera_execute,daemon=True)
     client.confirmConnection()
@@ -91,17 +89,18 @@ if __name__ == "__main__":
     #airsim.wait_key('Kalkis icin bir tusa basiniz')
     client.armDisarm(True)
     client.takeoffAsync().join()
-    client.moveToZAsync(client.getMultirotorState().kinematics_estimated.position.z_val + (-20), 2).join()
+    client.moveToZAsync(client.getMultirotorState().kinematics_estimated.position.z_val + (-60), 5).join()
+    time.sleep(3)
 
     #airsim.wait_key('Veri toplama ve ilerleme icin bir tusa basiniz')
     
     record_data = True
     cameraThread.start()
     
-    xAxis = 30
-    yAxis = 15
-    numberOfLaps = 6
-    speed = 6 
+    xAxis = 80
+    yAxis = 40
+    numberOfLaps = 10
+    speed = 2 
            
     x_pos, y_pos, z_pos =  position()
 
@@ -120,7 +119,7 @@ if __name__ == "__main__":
 
     record_data = False
 
-    client.moveToPositionAsync(x_start, y_start, z_pos ,1).join()    
+    client.moveToPositionAsync(x_start, y_start, z_pos ,2).join()    
 
     #airsim.wait_key("inis yapmak icin bir tusa basiniz")
     client.landAsync().join()

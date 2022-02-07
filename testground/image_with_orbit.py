@@ -35,7 +35,7 @@ def camera_execute():
         frameCount = 0
         startTime = time.time()
         fps = 0
-        filename = "orbit_"
+        filename = "ıcp_foto"
         count = 0
         while record_data:
             
@@ -48,7 +48,7 @@ def camera_execute():
                 png = cv2.imdecode(airsim.string_to_uint8_array(rawImage), cv2.IMREAD_UNCHANGED)
                 cv2.putText(png,'FPS ' + str(fps),textOrg, fontFace, fontScale,(255,0,255),thickness)
                 #cv2.imshow("Depth", png)
-                cv2.imshow("scene", png)
+                #cv2.imshow("scene", png)
                 
                 airsim.write_file(os.path.normpath("./foto/"+filename+str(count)+ '.png'), airsim.string_to_uint8_array(rawImage))
                 count+=1
@@ -59,7 +59,7 @@ def camera_execute():
                 fps = frameCount
                 frameCount = 0
                 startTime = endTime
-
+            time.sleep(2)
             key = cv2.waitKey(1) & 0xFF
             if (key == 27 or key == ord('q') or key == ord('x')):
                 break
@@ -99,7 +99,7 @@ def yaw_to_degrees(yaw):
 
 
 if __name__ == "__main__":
-    filename = "orbit_test_1"
+    filename = "ıcp_foto"
     #TODO: dronu yukseltecek kod yazilacak
     #TODO: dron donerken veri toplanip gorsellestirilecek
     #TODO: lidar veri miktari azaltilacak ve deneme yapilacak
@@ -112,22 +112,21 @@ if __name__ == "__main__":
     client.enableApiControl(True)
     client.armDisarm(False)
     
-    airsim.wait_key('Kalkis icin bir tusa basiniz')
+    #airsim.wait_key('Kalkis icin bir tusa basiniz')
     client.armDisarm(True)
     client.takeoffAsync().join()
 
 
-    airsim.wait_key('Yukselis icin bir tusa basiniz')
+    #airsim.wait_key('Yukselis icin bir tusa basiniz')
     
-    client.moveToZAsync(-5, 5).join()
+    client.moveToZAsync(-16, 5).join()
     #client.moveByVelocityZAsync(0,0, -5 ,0.20, airsim.DrivetrainType.MaxDegreeOfFreedom, airsim.YawMode(False, 53)).join()
     #Gamepadim yanimda olmadigindan elimle yon vermek icin yazdim usttekini xdd
     
     client.hoverAsync().join()
 
-    airsim.wait_key('Veri toplama ve yorunge icin bir tusa basiniz')
+    #airsim.wait_key('Veri toplama ve yorunge icin bir tusa basiniz')
     record_data = True
-
     
     drone_posistion = client.getMultirotorState().kinematics_estimated.position
     current_altitude = drone_posistion.z_val
@@ -155,14 +154,14 @@ if __name__ == "__main__":
     #ACI HESAPLARI BITIS
     w_val = orientation.w_val
     
-    orbit_radius = 10
+    orbit_radius = 27
 
 
     nav = orbit.OrbitNavigator(client =client,radius=orbit_radius,altitude=current_altitude, speed=2, iterations=1, center = center_vector, snapshots=0)
-    #Thread.start()
+    cameraThread.start()
     nav.start_orbit()
 
-    airsim.wait_key("inis yapmak icin bir tusa basiniz")
+    #airsim.wait_key("inis yapmak icin bir tusa basiniz")
     record_data = False
     client.moveToZAsync(-1, 5).join()
     

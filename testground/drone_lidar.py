@@ -54,7 +54,6 @@ class LidarTest:
                 print("\t\tlidar orientation: %s" % (pprint.pformat(lidarData.pose.orientation)))
             self.write_lidarData_to_disk(lidarData)
             time.sleep(5)
-
         
 
     def parse_lidarData(self, data):
