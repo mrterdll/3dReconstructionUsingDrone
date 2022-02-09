@@ -119,7 +119,7 @@ if __name__ == "__main__":
 
     #airsim.wait_key('Yukselis icin bir tusa basiniz')
     
-    client.moveToZAsync(-16, 5).join()
+    client.moveToZAsync(-30, 5).join()
     #client.moveByVelocityZAsync(0,0, -5 ,0.20, airsim.DrivetrainType.MaxDegreeOfFreedom, airsim.YawMode(False, 53)).join()
     #Gamepadim yanimda olmadigindan elimle yon vermek icin yazdim usttekini xdd
     
@@ -154,7 +154,7 @@ if __name__ == "__main__":
     #ACI HESAPLARI BITIS
     w_val = orientation.w_val
     
-    orbit_radius = 27
+    orbit_radius = 35
 
 
     nav = orbit.OrbitNavigator(client =client,radius=orbit_radius,altitude=current_altitude, speed=2, iterations=1, center = center_vector, snapshots=0)

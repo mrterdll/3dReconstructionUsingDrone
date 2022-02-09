@@ -28,7 +28,7 @@ def lidar_execute():
                 f = open(file_name_with_ext,'w')
             else:
                 f = open(file_name_with_ext,'a')
-            lidar_data =lidar_client.getLidarData(vehicle_name='Drone1',lidar_name='LidarSensor1')
+            lidar_data =lidar_client.getLidarData(vehicle_name='Drone1',lidar_name='LidarSensor2')
                     
             orientation = lidar_data.pose.orientation
             q0, q1, q2, q3 = orientation.w_val, orientation.x_val, orientation.y_val, orientation.z_val
@@ -91,7 +91,7 @@ if __name__ == "__main__":
     lidarThread = Thread(target=lidar_execute,daemon=True)
     
     client.confirmConnection()
-    lidar_execute.confirmConnection()
+    #lidar_execute.confirmConnection()
     client.enableApiControl(False)
     client.enableApiControl(True)
     client.armDisarm(False)
