@@ -35,12 +35,12 @@ def camera_execute():
         frameCount = 0
         startTime = time.time()
         fps = 0
-        filename = "ıcp_foto"
+        #filename = "ıcp_foto"
         count = 0
         while record_data:
             
             # because this method returns std::vector<uint8>, msgpack decides to encode it as a string unfortunately.
-            rawImage = camera_client.simGetImage("high_res_bottom", airsim.ImageType.Scene)
+            rawImage = camera_client.simGetImage("high_res_45_degree", airsim.ImageType.Scene)
             if (rawImage == None):
                 print("Camera is not returning image, please check airsim for error messages")
                 sys.exit(0)
@@ -99,7 +99,7 @@ def yaw_to_degrees(yaw):
 
 
 if __name__ == "__main__":
-    filename = "ıcp_foto"
+    filename = "ıcp_foto_2mahalle"
     #TODO: dronu yukseltecek kod yazilacak
     #TODO: dron donerken veri toplanip gorsellestirilecek
     #TODO: lidar veri miktari azaltilacak ve deneme yapilacak
@@ -119,7 +119,7 @@ if __name__ == "__main__":
 
     #airsim.wait_key('Yukselis icin bir tusa basiniz')
     
-    client.moveToZAsync(-30, 5).join()
+    client.moveToZAsync(-35, 5).join()
     #client.moveByVelocityZAsync(0,0, -5 ,0.20, airsim.DrivetrainType.MaxDegreeOfFreedom, airsim.YawMode(False, 53)).join()
     #Gamepadim yanimda olmadigindan elimle yon vermek icin yazdim usttekini xdd
     

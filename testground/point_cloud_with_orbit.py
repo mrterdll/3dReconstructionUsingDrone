@@ -28,7 +28,7 @@ def lidar_execute():
                 f = open(file_name_with_ext,'w')
             else:
                 f = open(file_name_with_ext,'a')
-            lidar_data =lidar_client.getLidarData(vehicle_name='Drone1',lidar_name='LidarSensor2')
+            lidar_data =lidar_client.getLidarData(vehicle_name='Drone1',lidar_name='LidarSensor1')
                     
             orientation = lidar_data.pose.orientation
             q0, q1, q2, q3 = orientation.w_val, orientation.x_val, orientation.y_val, orientation.z_val
@@ -83,7 +83,7 @@ def yaw_to_degrees(yaw):
     return math.degrees(yaw)
 
 if __name__ == "__main__":
-    filename = "ıcp_foto"
+    filename = "icp_lidar_mahalle"
     #TODO: dronu yukseltecek kod yazilacak
     #TODO: dron donerken veri toplanip gorsellestirilecek
     #TODO: lidar veri miktari azaltilacak ve deneme yapilacak
@@ -101,7 +101,7 @@ if __name__ == "__main__":
     client.takeoffAsync().join()
 
     #airsim.wait_key('Yukselis icin bir tusa basiniz')
-    client.moveToZAsync(-16, 5).join()
+    client.moveToZAsync(-20, 5).join()
     #client.moveByVelocityZAsync(0,0, -5 ,0.20, airsim.DrivetrainType.MaxDegreeOfFreedom, airsim.YawMode(False, 53)).join()
     #Gamepadim yanimda olmadigindan elimle yon vermek icin yazdim usttekini xdd
     

@@ -13,7 +13,4 @@ testground/foto/sfm.sfm
 *.sfm
 *.abc
 *.abc
-*.ply
 testground/foto/pointCloud.abc
-*.obj
-*.mtl
